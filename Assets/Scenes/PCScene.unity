@@ -848,7 +848,7 @@ MonoBehaviour:
     - rid: 1360807613071097859
       type: {class: WebSocketSignalingSettings, ns: Unity.RenderStreaming, asm: Unity.RenderStreaming}
       data:
-        m_url: ws://192.168.1.101
+        m_url: ws://192.168.50.167
         m_iceServers:
         - m_urls:
           - stun:stun.l.google.com:19302
@@ -885,6 +885,8 @@ MonoBehaviour:
   objectRenderStreaming: {fileID: 134159355}
   objectWhiteboard: {fileID: 551329797}
   localDelayTime: 0
+  lagStartFrame: 120
+  lagFrame: 240
 --- !u!114 &134159360
 MonoBehaviour:
   m_ObjectHideFlags: 0

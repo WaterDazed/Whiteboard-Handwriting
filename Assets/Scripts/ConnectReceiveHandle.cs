@@ -8,6 +8,8 @@ public class ConnectReceiveHandle : MonoBehaviour
     Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
 
     public long localDelayTime = 0;
+    public int lagStartFrame = 0, lagFrame = 0;
+    private int lagStartCount = 0, lagCount = 0;
 
     public void LoaclDelayTimeSet(int time)
     {
@@ -18,7 +20,6 @@ public class ConnectReceiveHandle : MonoBehaviour
     {
         var connectReceive = objectRenderStreaming.GetComponent<ConnectReceive>();
         connectReceive.boardChangeEvent.AddListener(ReceiveData);
-
         whiteboard = objectWhiteboard.GetComponent<Whiteboard>();
     }
 
@@ -31,9 +32,22 @@ public class ConnectReceiveHandle : MonoBehaviour
             var boardData = boardDataBuffer.Peek();
             if (timeNow - boardData.time >= localDelayTime)
             {
-                whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
-                boardDataBuffer.Dequeue();
-            }      
+                if (lagStartCount < lagStartFrame)
+                {
+                    whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
+                    boardDataBuffer.Dequeue();
+                    lagStartCount++;
+                }
+                else if(lagCount<lagFrame)
+                {
+                    lagCount++;
+                }
+                else
+                {
+                    lagStartCount = 0;
+                    lagCount = 0;
+                }
+            }
         }
     }
 

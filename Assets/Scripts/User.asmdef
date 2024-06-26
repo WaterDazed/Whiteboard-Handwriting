@@ -1,0 +1,20 @@
+{
+    "name": "User",
+    "rootNamespace": "",
+    "references": [
+        "GUID:40a5acf76f04c4c8ebb69605e4b0d5c7",
+        "GUID:f2b75970d4ce1bb4295211de20b2b46f",
+        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30",
+        "GUID:f12aafacab75a87499e7e45c873ffab8",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

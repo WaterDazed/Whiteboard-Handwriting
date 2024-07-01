@@ -32,7 +32,7 @@ public class ConnectReceiveHandle : MonoBehaviour
             var boardData = boardDataBuffer.Peek();
             if (timeNow - boardData.time >= localDelayTime)
             {
-                if (lagStartCount < lagStartFrame)
+                if (lagStartFrame == 0|| lagFrame ==0 || lagStartCount < lagStartFrame)
                 {
                     whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
                     boardDataBuffer.Dequeue();

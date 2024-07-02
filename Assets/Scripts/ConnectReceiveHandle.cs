@@ -1,19 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 public class ConnectReceiveHandle : MonoBehaviour
 {
     public GameObject objectRenderStreaming, objectWhiteboard;
     private Whiteboard whiteboard;
     Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
+    private long bufferOutTime;
+    private const long bufferDeltaTime = 16;//ms
 
     public long localDelayTime = 0;
     public int lagStartFrame = 0, lagFrame = 0;
     private int lagStartCount = 0, lagCount = 0;
 
-    public void LoaclDelayTimeSet(int time)
+    public void LoaclDelayTimeSet(int localDelayTime)
     {
-        localDelayTime = time;
+        this.localDelayTime = localDelayTime;
+    }
+    public void LocalLagStartFrameSet(int lagStartFrame)
+    {
+        this.lagStartFrame = lagStartFrame;
+    }
+    public void LocalLagFrameSet(int lagFrame)
+    {
+        this.lagFrame = lagFrame;
     }
     // Start is called before the first frame update
     void Start()
@@ -21,12 +32,17 @@ public class ConnectReceiveHandle : MonoBehaviour
         var connectReceive = objectRenderStreaming.GetComponent<ConnectReceive>();
         connectReceive.boardChangeEvent.AddListener(ReceiveData);
         whiteboard = objectWhiteboard.GetComponent<Whiteboard>();
+        long timeNow = GetCurrentTime.Get();
+        bufferOutTime = timeNow;
     }
 
     // Update is called once per frame
     void Update()
     {
         long timeNow = GetCurrentTime.Get();
+        if (timeNow - bufferOutTime < bufferDeltaTime)
+            return;
+        bufferOutTime = timeNow;
         if (boardDataBuffer.Count > 0)
         {
             var boardData = boardDataBuffer.Peek();

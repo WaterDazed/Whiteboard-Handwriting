@@ -811,16 +811,18 @@ struct ConnectReceiveHandle_tCDF050151C7A39FC0D8600857E796E65D9EE7685  : public 
 	Whiteboard_tE50E8490C643D4271045F30D31F3976BB2B5AFD1* ___whiteboard_6;
 	// System.Collections.Generic.Queue`1<BoardData> ConnectReceiveHandle::boardDataBuffer
 	Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* ___boardDataBuffer_7;
+	// System.Int64 ConnectReceiveHandle::bufferOutTime
+	int64_t ___bufferOutTime_8;
 	// System.Int64 ConnectReceiveHandle::localDelayTime
-	int64_t ___localDelayTime_8;
+	int64_t ___localDelayTime_10;
 	// System.Int32 ConnectReceiveHandle::lagStartFrame
-	int32_t ___lagStartFrame_9;
+	int32_t ___lagStartFrame_11;
 	// System.Int32 ConnectReceiveHandle::lagFrame
-	int32_t ___lagFrame_10;
+	int32_t ___lagFrame_12;
 	// System.Int32 ConnectReceiveHandle::lagStartCount
-	int32_t ___lagStartCount_11;
+	int32_t ___lagStartCount_13;
 	// System.Int32 ConnectReceiveHandle::lagCount
-	int32_t ___lagCount_12;
+	int32_t ___lagCount_14;
 };
 
 // Unity.RenderStreaming.DataChannelBase
@@ -1220,12 +1222,34 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void Vector4__ctor_m96B2CD8B862B2
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
 // System.Void ConnectReceiveHandle::LoaclDelayTimeSet(System.Int32)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_LoaclDelayTimeSet_mB3329D3803923EDD599A4AA07A58FFD5340F4BE3 (ConnectReceiveHandle_tCDF050151C7A39FC0D8600857E796E65D9EE7685* __this, int32_t ___time0, const RuntimeMethod* method) 
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_LoaclDelayTimeSet_mB3329D3803923EDD599A4AA07A58FFD5340F4BE3 (ConnectReceiveHandle_tCDF050151C7A39FC0D8600857E796E65D9EE7685* __this, int32_t ___localDelayTime0, const RuntimeMethod* method) 
 {
 	{
-		// localDelayTime = time;
-		int32_t L_0 = ___time0;
-		__this->___localDelayTime_8 = ((int64_t)L_0);
+		// this.localDelayTime = localDelayTime;
+		int32_t L_0 = ___localDelayTime0;
+		__this->___localDelayTime_10 = ((int64_t)L_0);
+		// }
+		return;
+	}
+}
+// System.Void ConnectReceiveHandle::LocalLagStartFrameSet(System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_LocalLagStartFrameSet_m9DE186A0E442B138725E696BE0058308D5397DFF (ConnectReceiveHandle_tCDF050151C7A39FC0D8600857E796E65D9EE7685* __this, int32_t ___lagStartFrame0, const RuntimeMethod* method) 
+{
+	{
+		// this.lagStartFrame = lagStartFrame;
+		int32_t L_0 = ___lagStartFrame0;
+		__this->___lagStartFrame_11 = L_0;
+		// }
+		return;
+	}
+}
+// System.Void ConnectReceiveHandle::LocalLagFrameSet(System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_LocalLagFrameSet_m2CE60A36481826A5C6B6738870B1F563AA7499D4 (ConnectReceiveHandle_tCDF050151C7A39FC0D8600857E796E65D9EE7685* __this, int32_t ___lagFrame0, const RuntimeMethod* method) 
+{
+	{
+		// this.lagFrame = lagFrame;
+		int32_t L_0 = ___lagFrame0;
+		__this->___lagFrame_12 = L_0;
 		// }
 		return;
 	}
@@ -1243,6 +1267,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_Start_mCE6A6EA55012
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&UnityEvent_1_AddListener_mBAB0A2A8C3FE54F200A4D4C7A0F749B73A97CC45_RuntimeMethod_var);
 		s_Il2CppMethodInitialized = true;
 	}
+	int64_t V_0 = 0;
 	{
 		// var connectReceive = objectRenderStreaming.GetComponent<ConnectReceive>();
 		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0 = __this->___objectRenderStreaming_4;
@@ -1264,6 +1289,13 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_Start_mCE6A6EA55012
 		L_5 = GameObject_GetComponent_TisWhiteboard_tE50E8490C643D4271045F30D31F3976BB2B5AFD1_mF9BE55ACD046EF30DDD69BDADC956803BAD965A6(L_4, GameObject_GetComponent_TisWhiteboard_tE50E8490C643D4271045F30D31F3976BB2B5AFD1_mF9BE55ACD046EF30DDD69BDADC956803BAD965A6_RuntimeMethod_var);
 		__this->___whiteboard_6 = L_5;
 		Il2CppCodeGenWriteBarrier((void**)(&__this->___whiteboard_6), (void*)L_5);
+		// long timeNow = GetCurrentTime.Get();
+		int64_t L_6;
+		L_6 = GetCurrentTime_Get_mAE60CE373D6BDBD367062BC27D76994EBF11A304(NULL);
+		V_0 = L_6;
+		// bufferOutTime = timeNow;
+		int64_t L_7 = V_0;
+		__this->___bufferOutTime_8 = L_7;
 		// }
 		return;
 	}
@@ -1287,94 +1319,128 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ConnectReceiveHandle_Update_mA1F6CF6D4F6
 		int64_t L_0;
 		L_0 = GetCurrentTime_Get_mAE60CE373D6BDBD367062BC27D76994EBF11A304(NULL);
 		V_0 = L_0;
-		// if (boardDataBuffer.Count > 0)
-		Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* L_1 = __this->___boardDataBuffer_7;
-		NullCheck(L_1);
-		int32_t L_2;
-		L_2 = Queue_1_get_Count_m98201EDF7803BEA289DECD79BB98962CF9F7B83F_inline(L_1, Queue_1_get_Count_m98201EDF7803BEA289DECD79BB98962CF9F7B83F_RuntimeMethod_var);
-		if ((((int32_t)L_2) <= ((int32_t)0)))
+		// if (timeNow - bufferOutTime < bufferDeltaTime)
+		int64_t L_1 = V_0;
+		int64_t L_2 = __this->___bufferOutTime_8;
+		if ((((int64_t)((int64_t)il2cpp_codegen_subtract(L_1, L_2))) >= ((int64_t)((int64_t)((int32_t)16)))))
 		{
-			goto IL_00b0;
+			goto IL_0014;
+		}
+	}
+	{
+		// return;
+		return;
+	}
+
+IL_0014:
+	{
+		// bufferOutTime = timeNow;
+		int64_t L_3 = V_0;
+		__this->___bufferOutTime_8 = L_3;
+		// if (boardDataBuffer.Count > 0)
+		Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* L_4 = __this->___boardDataBuffer_7;
+		NullCheck(L_4);
+		int32_t L_5;
+		L_5 = Queue_1_get_Count_m98201EDF7803BEA289DECD79BB98962CF9F7B83F_inline(L_4, Queue_1_get_Count_m98201EDF7803BEA289DECD79BB98962CF9F7B83F_RuntimeMethod_var);
+		if ((((int32_t)L_5) <= ((int32_t)0)))
+		{
+			goto IL_00d8;
 		}
 	}
 	{
 		// var boardData = boardDataBuffer.Peek();
-		Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* L_3 = __this->___boardDataBuffer_7;
-		NullCheck(L_3);
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_4;
-		L_4 = Queue_1_Peek_m7AC1EB78ED2CF170AC9F0BFC4075F9DB4463860B(L_3, Queue_1_Peek_m7AC1EB78ED2CF170AC9F0BFC4075F9DB4463860B_RuntimeMethod_var);
-		V_1 = L_4;
+		Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* L_6 = __this->___boardDataBuffer_7;
+		NullCheck(L_6);
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_7;
+		L_7 = Queue_1_Peek_m7AC1EB78ED2CF170AC9F0BFC4075F9DB4463860B(L_6, Queue_1_Peek_m7AC1EB78ED2CF170AC9F0BFC4075F9DB4463860B_RuntimeMethod_var);
+		V_1 = L_7;
 		// if (timeNow - boardData.time >= localDelayTime)
-		int64_t L_5 = V_0;
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_6 = V_1;
-		int64_t L_7 = L_6.___time_5;
-		int64_t L_8 = __this->___localDelayTime_8;
-		if ((((int64_t)((int64_t)il2cpp_codegen_subtract(L_5, L_7))) < ((int64_t)L_8)))
+		int64_t L_8 = V_0;
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_9 = V_1;
+		int64_t L_10 = L_9.___time_5;
+		int64_t L_11 = __this->___localDelayTime_10;
+		if ((((int64_t)((int64_t)il2cpp_codegen_subtract(L_8, L_10))) < ((int64_t)L_11)))
 		{
-			goto IL_00b0;
+			goto IL_00d8;
 		}
 	}
 	{
-		// if (lagStartCount < lagStartFrame)
-		int32_t L_9 = __this->___lagStartCount_11;
-		int32_t L_10 = __this->___lagStartFrame_9;
-		if ((((int32_t)L_9) >= ((int32_t)L_10)))
+		// if (lagStartFrame == 0|| lagFrame ==0 || lagStartCount < lagStartFrame)
+		int32_t L_12 = __this->___lagStartFrame_11;
+		if (!L_12)
 		{
-			goto IL_0085;
+			goto IL_0069;
 		}
 	}
+	{
+		int32_t L_13 = __this->___lagFrame_12;
+		if (!L_13)
+		{
+			goto IL_0069;
+		}
+	}
+	{
+		int32_t L_14 = __this->___lagStartCount_13;
+		int32_t L_15 = __this->___lagStartFrame_11;
+		if ((((int32_t)L_14) >= ((int32_t)L_15)))
+		{
+			goto IL_00ad;
+		}
+	}
+
+IL_0069:
 	{
 		// whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
-		Whiteboard_tE50E8490C643D4271045F30D31F3976BB2B5AFD1* L_11 = __this->___whiteboard_6;
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_12 = V_1;
-		int32_t L_13 = L_12.___type_0;
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_14 = V_1;
-		int32_t L_15 = L_14.___x_1;
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_16 = V_1;
-		int32_t L_17 = L_16.___y_2;
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_18 = V_1;
-		int32_t L_19 = L_18.___color_3;
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_20 = V_1;
-		int32_t L_21 = L_20.___drawSize_4;
-		NullCheck(L_11);
-		Whiteboard_ReceiveDraw_mC10836698D07B314C0A682F952A1A2DB2E60CBED(L_11, L_13, L_15, L_17, L_19, L_21, NULL);
+		Whiteboard_tE50E8490C643D4271045F30D31F3976BB2B5AFD1* L_16 = __this->___whiteboard_6;
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_17 = V_1;
+		int32_t L_18 = L_17.___type_0;
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_19 = V_1;
+		int32_t L_20 = L_19.___x_1;
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_21 = V_1;
+		int32_t L_22 = L_21.___y_2;
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_23 = V_1;
+		int32_t L_24 = L_23.___color_3;
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_25 = V_1;
+		int32_t L_26 = L_25.___drawSize_4;
+		NullCheck(L_16);
+		Whiteboard_ReceiveDraw_mC10836698D07B314C0A682F952A1A2DB2E60CBED(L_16, L_18, L_20, L_22, L_24, L_26, NULL);
 		// boardDataBuffer.Dequeue();
-		Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* L_22 = __this->___boardDataBuffer_7;
-		NullCheck(L_22);
-		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_23;
-		L_23 = Queue_1_Dequeue_mF0D117EDF13DBA9041CB72F07FEF6E0F648D25C2(L_22, Queue_1_Dequeue_mF0D117EDF13DBA9041CB72F07FEF6E0F648D25C2_RuntimeMethod_var);
+		Queue_1_t7E2756A7BB60D6D5298AC362AD5C50196A9D1DB6* L_27 = __this->___boardDataBuffer_7;
+		NullCheck(L_27);
+		BoardData_tD7A32E83E2390379148868B8C745E481E83D575C L_28;
+		L_28 = Queue_1_Dequeue_mF0D117EDF13DBA9041CB72F07FEF6E0F648D25C2(L_27, Queue_1_Dequeue_mF0D117EDF13DBA9041CB72F07FEF6E0F648D25C2_RuntimeMethod_var);
 		// lagStartCount++;
-		int32_t L_24 = __this->___lagStartCount_11;
-		__this->___lagStartCount_11 = ((int32_t)il2cpp_codegen_add(L_24, 1));
+		int32_t L_29 = __this->___lagStartCount_13;
+		__this->___lagStartCount_13 = ((int32_t)il2cpp_codegen_add(L_29, 1));
 		return;
 	}
 
-IL_0085:
+IL_00ad:
 	{
 		// else if(lagCount<lagFrame)
-		int32_t L_25 = __this->___lagCount_12;
-		int32_t L_26 = __this->___lagFrame_10;
-		if ((((int32_t)L_25) >= ((int32_t)L_26)))
+		int32_t L_30 = __this->___lagCount_14;
+		int32_t L_31 = __this->___lagFrame_12;
+		if ((((int32_t)L_30) >= ((int32_t)L_31)))
 		{
-			goto IL_00a2;
+			goto IL_00ca;
 		}
 	}
 	{
 		// lagCount++;
-		int32_t L_27 = __this->___lagCount_12;
-		__this->___lagCount_12 = ((int32_t)il2cpp_codegen_add(L_27, 1));
+		int32_t L_32 = __this->___lagCount_14;
+		__this->___lagCount_14 = ((int32_t)il2cpp_codegen_add(L_32, 1));
 		return;
 	}
 
-IL_00a2:
+IL_00ca:
 	{
 		// lagStartCount = 0;
-		__this->___lagStartCount_11 = 0;
+		__this->___lagStartCount_13 = 0;
 		// lagCount = 0;
-		__this->___lagCount_12 = 0;
+		__this->___lagCount_14 = 0;
 	}
 
-IL_00b0:
+IL_00d8:
 	{
 		// }
 		return;

@@ -12,7 +12,20 @@ public class ScaleMenu : MonoBehaviour
     private Timer timer;
 
     private string fileName, path;
-    public string[] questionQueue = new string[4];
+    public string[] questionQueue = new string[11]
+    {
+        " ",
+        "在白板上写画和操作都非常流畅、舒适与自然",
+        "这次绘画任务的完成效率非常高",
+        "我和我的同伴能互相感受到对方的存在",
+        "我和我的同伴在理解对方上有困难",
+        "我能轻易地掌握该白板的使用方法",
+        "在整个绘画过程中，我和我的同伴都没有得到对方的全部关注",
+        "我和我的同伴互相都感受不到对方的存在",
+        "与同伴的绘画协作过程十分顺利",
+        "我和我的同伴能轻松地相互理解",
+        "在整个绘画过程中，我和我的同伴都互相关注着对方"
+    };
     private int questionPos;
     // Start is called before the first frame update
     public void WriteResult(int score)
@@ -22,7 +35,8 @@ public class ScaleMenu : MonoBehaviour
         questionPos++;
         if (questionPos > questionQueue.Length - 1)
         {
-            if (taskMenu.taskPos > taskMenu.delayQueue.Length - 1)
+            //查看时延或卡顿任务进度
+            if (taskMenu.taskPos > taskMenu.delayList.Length - 1)
                 objectGoodbyeMenu.SetActive(true);
             else
                 objectReadyMenu.SetActive(true);
@@ -48,7 +62,8 @@ public class ScaleMenu : MonoBehaviour
     {
         questionPos = 1;
         questionText.text = questionQueue[questionPos];
-        File.AppendAllText(path, "delay:" + taskMenu.delayQueue[taskMenu.taskPos].ToString() + "\n");
+        //时延或卡顿得分写入
+        File.AppendAllText(path, "delay:" + taskMenu.delayList[taskMenu.taskPos].ToString() + "\n");
         File.AppendAllText(path, "time:" + timer.time.ToString("0.0") + "\n");
     }
     // Update is called once per frame

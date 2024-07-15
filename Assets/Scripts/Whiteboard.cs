@@ -77,7 +77,7 @@ public class Whiteboard : MonoBehaviour
     public void ReceiveDraw(int type, int x, int y, int color, int drawSize)
     {
         Color drawColor = NumToColor(color);
-        remoteTouching = type == 1 ? true : false;
+        remoteTouching = type == 1;
         if (remoteTouchingLast)
         {
             texture.DrawCircle(drawColor, x, y, drawSize);

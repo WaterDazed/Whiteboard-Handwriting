@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+public struct STALL
+{
+    public int stallStartFrame;
+    public int stallFrame;
+}
 public class TaskMenu : MonoBehaviour
 {
     public GameObject objectScaleMenu, objectTimer, objectRenderStreaming, objectButtonText, objectProcedureText;
-    private GameObject objectPic;
+    private GameObject objectPic1, objectPic2;
     private TextMeshPro buttonText;
     private TextMeshProUGUI procedureText;
     private ConnectReceiveHandle connectReceiveHandle;
@@ -15,11 +20,34 @@ public class TaskMenu : MonoBehaviour
 
     public bool remoteComplete = false;
     private bool selfComplete = false;
-    public int[] delayQueue = new int[4];//ms
-    //public int[] stallQueueStartFrame = new int[20];
-    //public int[] stallQueueFrame = new int[20];
+
+    //delay
+    public int[] delayList = new int[8] { 0, 100, 500, 1000, 1750, 2500, 3500, 4500 };//ms
+    const int inherentDelay = 80;
+
+    //stall
+    public STALL[] stallList = new STALL[16]
+    {
+        new STALL {stallStartFrame=0,stallFrame=0 },
+        new STALL {stallStartFrame=60,stallFrame=6 },
+        new STALL {stallStartFrame=60,stallFrame=18 },
+        new STALL {stallStartFrame=60,stallFrame=30 },
+        new STALL {stallStartFrame=60,stallFrame=45 },
+        new STALL {stallStartFrame=60,stallFrame=60 },
+        new STALL {stallStartFrame=60,stallFrame=90 },
+        new STALL {stallStartFrame=60,stallFrame=120 },
+        new STALL {stallStartFrame=30,stallFrame=6 },
+        new STALL {stallStartFrame=30,stallFrame=30 },
+        new STALL {stallStartFrame=30,stallFrame=60 },
+        new STALL {stallStartFrame=30,stallFrame=120 },
+        new STALL {stallStartFrame=20,stallFrame=6 },
+        new STALL {stallStartFrame=20,stallFrame=18 },
+        new STALL {stallStartFrame=20,stallFrame=45 },
+        new STALL {stallStartFrame=20,stallFrame=90 },
+    };
+
     public int taskPos = 1;
-     
+
     public void SetSelfComplete()
     {
         selfComplete = true;
@@ -40,15 +68,20 @@ public class TaskMenu : MonoBehaviour
     {
         //重置按钮和进度文字
         buttonText.text = "完成";
-        procedureText.text = "实验进度：" + taskPos.ToString() + "/" + (delayQueue.Length - 1).ToString();
+        procedureText.text = "实验进度:" + taskPos.ToString() + "/" + (stallList.Length - 1).ToString();
         //应用时延或卡顿
-        connectReceiveHandle.localDelayTime = delayQueue[taskPos] - 80;
+        connectReceiveHandle.localDelayTime = 100 - inherentDelay;
+        connectReceiveHandle.stallStartFrame = stallList[taskPos].stallStartFrame;
+        connectReceiveHandle.stallFrame = stallList[taskPos].stallFrame;
+        connectReceiveHandle.stallStartCount = connectReceiveHandle.stallCount = 0;
         //开始计时
         timer.TimerStart();
         //展示图画示例
-        int index = taskPos % 4;
-        objectPic = transform.GetChild(2).GetChild(index).gameObject;
-        objectPic.SetActive(true); 
+        int index1 = taskPos % 5, index2 = (taskPos + 1) % 5;
+        objectPic1 = transform.GetChild(2).GetChild(index1).gameObject;
+        objectPic2 = transform.GetChild(2).GetChild(index2).gameObject;
+        objectPic1.SetActive(true);
+        objectPic2.SetActive(true);
     }
     private void OnDisable()
     {
@@ -57,7 +90,8 @@ public class TaskMenu : MonoBehaviour
         //计时停止
         timer.TimerEnd();
         //隐藏图画示例
-        objectPic.SetActive(false);
+        objectPic1.SetActive(false);
+        objectPic2.SetActive(false);
 
         taskPos++;
     }

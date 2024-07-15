@@ -14,8 +14,8 @@ public class ConnectReceiveHandle : MonoBehaviour
     private const long bufferDeltaTime = 16;//ms
 
     public long localDelayTime = 0;
-    public int lagStartFrame = 0, lagFrame = 0;
-    private int lagStartCount = 0, lagCount = 0;
+    public int stallStartFrame = 0, stallFrame = 0;
+    public int stallStartCount = 0, stallCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -43,20 +43,20 @@ public class ConnectReceiveHandle : MonoBehaviour
             var boardData = boardDataBuffer.Peek();
             if (timeNow - boardData.time >= localDelayTime)
             {
-                if (lagStartFrame == 0|| lagFrame ==0 || lagStartCount < lagStartFrame)
+                if (stallStartFrame == 0 || stallFrame == 0 || stallStartCount < stallStartFrame)
                 {
                     whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
                     boardDataBuffer.Dequeue();
-                    lagStartCount++;
+                    stallStartCount++;
                 }
-                else if(lagCount<lagFrame)
+                else if (stallCount < stallFrame)
                 {
-                    lagCount++;
+                    stallCount++;
                 }
                 else
                 {
-                    lagStartCount = 0;
-                    lagCount = 0;
+                    stallStartCount = 0;
+                    stallCount = 0;
                 }
             }
         }
@@ -67,7 +67,7 @@ public class ConnectReceiveHandle : MonoBehaviour
         long timeNow = GetCurrentTime.Get();
         if (boardData.type == -1)
             whiteboard.BoardClear();
-        else if (boardData.type == 1)
+        else if (boardData.type == 0 || boardData.type == 1)
         {
             boardData.time = timeNow;
             boardDataBuffer.Enqueue(boardData);

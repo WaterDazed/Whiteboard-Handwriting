@@ -29,21 +29,22 @@ public class TaskMenu : MonoBehaviour
     public STALL[] stallList = new STALL[16]
     {
         new STALL {stallStartFrame=0,stallFrame=0 },
-        new STALL {stallStartFrame=60,stallFrame=6 },
-        new STALL {stallStartFrame=60,stallFrame=18 },
-        new STALL {stallStartFrame=60,stallFrame=30 },
-        new STALL {stallStartFrame=60,stallFrame=45 },
-        new STALL {stallStartFrame=60,stallFrame=60 },
-        new STALL {stallStartFrame=60,stallFrame=90 },
-        new STALL {stallStartFrame=60,stallFrame=120 },
-        new STALL {stallStartFrame=30,stallFrame=6 },
-        new STALL {stallStartFrame=30,stallFrame=30 },
-        new STALL {stallStartFrame=30,stallFrame=60 },
-        new STALL {stallStartFrame=30,stallFrame=120 },
-        new STALL {stallStartFrame=20,stallFrame=6 },
-        new STALL {stallStartFrame=20,stallFrame=18 },
-        new STALL {stallStartFrame=20,stallFrame=45 },
-        new STALL {stallStartFrame=20,stallFrame=90 },
+        new STALL {stallStartFrame=30, stallFrame=30},
+        new STALL {stallStartFrame=60, stallFrame=6},
+        new STALL {stallStartFrame=60, stallFrame=60},
+        new STALL {stallStartFrame=30, stallFrame=120},
+        new STALL {stallStartFrame=20, stallFrame=18},
+        new STALL {stallStartFrame=20, stallFrame=90},
+        new STALL {stallStartFrame=60, stallFrame=120},
+        new STALL {stallStartFrame=60, stallFrame=18},
+        new STALL {stallStartFrame=30, stallFrame=60},
+        new STALL {stallStartFrame=60, stallFrame=90},
+        new STALL {stallStartFrame=20, stallFrame=45},
+        new STALL {stallStartFrame=20, stallFrame=6},
+        new STALL {stallStartFrame=60, stallFrame=30},
+        new STALL {stallStartFrame=60, stallFrame=45},
+        new STALL {stallStartFrame=30, stallFrame=6}
+
     };
 
     public int taskPos = 1;

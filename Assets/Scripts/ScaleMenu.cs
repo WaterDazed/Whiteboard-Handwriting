@@ -64,8 +64,8 @@ public class ScaleMenu : MonoBehaviour
         questionText.text = questionQueue[questionPos];
         //时延或卡顿得分写入
         //File.AppendAllText(path, "delay:" + taskMenu.delayList[taskMenu.taskPos].ToString() + "\n");
-        File.AppendAllText(path, "stallStartFrame:" + taskMenu.stallList[taskMenu.taskPos].stallStartFrame + 
-            "stallFrame:" + taskMenu.stallList[taskMenu.taskPos].stallFrame + 
+        File.AppendAllText(path, "stallIntervalTime:" + taskMenu.stallList[taskMenu.taskPos].stallIntervalTime + 
+            "stallTime:" + taskMenu.stallList[taskMenu.taskPos].stallTime + 
             "\n");
         File.AppendAllText(path, "time:" + timer.time.ToString("0.0") + "\n");
     }

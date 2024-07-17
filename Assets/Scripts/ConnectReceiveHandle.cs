@@ -12,12 +12,11 @@ public class ConnectReceiveHandle : MonoBehaviour
 
     public Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
     public Queue<AvatarData> avatarDataBuffer = new Queue<AvatarData>();
-    private long preBufferOutTime = 0;
-    private const long bufferDeltaTime = 16;//ms
 
     public long localDelayTime = 0;
-    public int stallStartFrame = 0, stallFrame = 0;
-    public int stallStartCount = 0, stallCount = 0;
+    public long preFrameTime;
+    public int stallIntervalTime = 0, stallTime = 0;
+    public int stallIntervalTimeCount = 0, stallTimeCount = 0;
 
     void Awake()
     {
@@ -29,19 +28,21 @@ public class ConnectReceiveHandle : MonoBehaviour
         taskMenu = objectTaskMenu.GetComponent<TaskMenu>();
         avatarTransRemote = objectAvatarManager.GetComponent<AvatarTransRemote>();
 
-        long timeNow = GetCurrentTime.Get();
-        preBufferOutTime = timeNow;
+        preFrameTime = GetCurrentTime.Get(); 
+
     }
 
     void Update()
     {
         long timeNow = GetCurrentTime.Get();
+        int frameDeltaTime = (int)(timeNow - preFrameTime);
+        preFrameTime = timeNow;
         if (boardDataBuffer.Count > 0)
         {
             var boardData = boardDataBuffer.Peek();
             if (timeNow - boardData.time >= localDelayTime)
             {
-                if (stallStartFrame == 0 || stallFrame == 0 || stallStartCount < stallStartFrame)
+                if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
                 {
                     whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
                     boardDataBuffer.Dequeue();
@@ -49,16 +50,16 @@ public class ConnectReceiveHandle : MonoBehaviour
                     if (avatarDataBuffer.Count > 0)
                         avatarTransRemote.ApplyAvatarData(avatarDataBuffer.Dequeue());
 
-                    stallStartCount++;
+                    stallIntervalTimeCount += frameDeltaTime;
                 }
-                else if (stallCount < stallFrame)
+                else if (stallTimeCount < stallTime)
                 {
-                    stallCount++;
+                    stallTimeCount += frameDeltaTime;
                 }
                 else
                 {
-                    stallStartCount = 0;
-                    stallCount = 0;
+                    stallIntervalTimeCount = 0;
+                    stallTimeCount = 0;
                 }
             }
         }

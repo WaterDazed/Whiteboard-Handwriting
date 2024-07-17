@@ -5,8 +5,8 @@ using UnityEngine;
 
 public struct STALL
 {
-    public int stallStartFrame;
-    public int stallFrame;
+    public int stallIntervalTime;
+    public int stallTime;
 }
 public class TaskMenu : MonoBehaviour
 {
@@ -28,22 +28,22 @@ public class TaskMenu : MonoBehaviour
     //stall
     public STALL[] stallList = new STALL[16]
     {
-        new STALL {stallStartFrame=0,stallFrame=0 },
-        new STALL {stallStartFrame=30, stallFrame=30},
-        new STALL {stallStartFrame=60, stallFrame=6},
-        new STALL {stallStartFrame=60, stallFrame=60},
-        new STALL {stallStartFrame=30, stallFrame=120},
-        new STALL {stallStartFrame=20, stallFrame=18},
-        new STALL {stallStartFrame=20, stallFrame=90},
-        new STALL {stallStartFrame=60, stallFrame=120},
-        new STALL {stallStartFrame=60, stallFrame=18},
-        new STALL {stallStartFrame=30, stallFrame=60},
-        new STALL {stallStartFrame=60, stallFrame=90},
-        new STALL {stallStartFrame=20, stallFrame=45},
-        new STALL {stallStartFrame=20, stallFrame=6},
-        new STALL {stallStartFrame=60, stallFrame=30},
-        new STALL {stallStartFrame=60, stallFrame=45},
-        new STALL {stallStartFrame=30, stallFrame=6}
+        new STALL {stallIntervalTime=0,stallTime=0 },
+        new STALL {stallIntervalTime=500, stallTime=500},
+        new STALL {stallIntervalTime=60, stallTime=6},
+        new STALL {stallIntervalTime=60, stallTime=60},
+        new STALL {stallIntervalTime=30, stallTime=120},
+        new STALL {stallIntervalTime=20, stallTime=18},
+        new STALL {stallIntervalTime=20, stallTime=90},
+        new STALL {stallIntervalTime=60, stallTime=120},
+        new STALL {stallIntervalTime=60, stallTime=18},
+        new STALL {stallIntervalTime=30, stallTime=60},
+        new STALL {stallIntervalTime=60, stallTime=90},
+        new STALL {stallIntervalTime=20, stallTime=45},
+        new STALL {stallIntervalTime=20, stallTime=6},
+        new STALL {stallIntervalTime=60, stallTime=30},
+        new STALL {stallIntervalTime=60, stallTime=45},
+        new STALL {stallIntervalTime=30, stallTime=6}
 
     };
 
@@ -72,9 +72,10 @@ public class TaskMenu : MonoBehaviour
         procedureText.text = "实验进度:" + taskPos.ToString() + "/" + (stallList.Length - 1).ToString();
         //应用时延或卡顿
         connectReceiveHandle.localDelayTime = 100 - inherentDelay;
-        connectReceiveHandle.stallStartFrame = stallList[taskPos].stallStartFrame;
-        connectReceiveHandle.stallFrame = stallList[taskPos].stallFrame;
-        connectReceiveHandle.stallStartCount = connectReceiveHandle.stallCount = 0;
+        connectReceiveHandle.stallIntervalTime = stallList[taskPos].stallIntervalTime;
+        connectReceiveHandle.stallTime = stallList[taskPos].stallTime;
+        connectReceiveHandle.stallIntervalTimeCount = connectReceiveHandle.stallTimeCount = 0;
+        connectReceiveHandle.preFrameTime = GetCurrentTime.Get();
         //开始计时
         timer.TimerStart();
         //展示图画示例

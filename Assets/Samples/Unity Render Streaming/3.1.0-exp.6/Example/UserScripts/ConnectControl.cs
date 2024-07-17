@@ -9,7 +9,6 @@ public class ConnectControl: MonoBehaviour
 {
 #pragma warning disable 0649
     public string connectID;
-    public bool connectFlag = false;
     [SerializeField] private SignalingManager objectSignalingManager;
     //[SerializeField] private Dropdown microphoneSelectDropdown;
     //[SerializeField] private AudioStreamSender microphoneStreamer;
@@ -57,13 +56,11 @@ public class ConnectControl: MonoBehaviour
     public void SetUp()
     {
         objectSingleConnection.CreateConnection(connectID);
-        connectFlag = true;
     }
 
     public void HangUp()
     {
         objectSingleConnection.DeleteConnection(connectID);
-        connectFlag = false;
     }
 
 

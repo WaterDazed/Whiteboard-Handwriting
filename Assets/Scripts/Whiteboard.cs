@@ -95,7 +95,7 @@ public class Whiteboard : MonoBehaviour
 
             texture.Apply();
         }
-        avatarTransRemote.ApplyAvatarData(boardData);
+
 
         remoteLastX = x;
         remoteLastY = y;

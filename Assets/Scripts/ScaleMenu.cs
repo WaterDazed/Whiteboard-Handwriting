@@ -12,19 +12,19 @@ public class ScaleMenu : MonoBehaviour
     private Timer timer;
 
     private string fileName, path;
-    public string[] questionQueue = new string[11]
+    public string[] questionList = new string[11]
     {
         " ",
-        "ÔÚ°×°åÉÏÐ´»­ºÍ²Ù×÷¶¼·Ç³£Á÷³©¡¢ÊæÊÊÓë×ÔÈ»",
-        "Õâ´Î»æ»­ÈÎÎñµÄÍê³ÉÐ§ÂÊ·Ç³£¸ß",
-        "ÎÒºÍÎÒµÄÍ¬°éÄÜ»¥Ïà¸ÐÊÜµ½¶Ô·½µÄ´æÔÚ",
-        "ÎÒºÍÎÒµÄÍ¬°éÔÚÀí½â¶Ô·½ÉÏÓÐÀ§ÄÑ",
-        "ÎÒÄÜÇáÒ×µØÕÆÎÕ¸Ã°×°åµÄÊ¹ÓÃ·½·¨",
-        "ÔÚÕû¸ö»æ»­¹ý³ÌÖÐ£¬ÎÒºÍÎÒµÄÍ¬°é¶¼Ã»ÓÐµÃµ½¶Ô·½µÄÈ«²¿¹Ø×¢",
-        "ÎÒºÍÎÒµÄÍ¬°é»¥Ïà¶¼¸ÐÊÜ²»µ½¶Ô·½µÄ´æÔÚ",
-        "ÓëÍ¬°éµÄ»æ»­Ð­×÷¹ý³ÌÊ®·ÖË³Àû",
-        "ÎÒºÍÎÒµÄÍ¬°éÄÜÇáËÉµØÏà»¥Àí½â",
-        "ÔÚÕû¸ö»æ»­¹ý³ÌÖÐ£¬ÎÒºÍÎÒµÄÍ¬°é¶¼»¥Ïà¹Ø×¢×Å¶Ô·½"
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
     };
     private int questionPos;
     // Start is called before the first frame update
@@ -33,9 +33,8 @@ public class ScaleMenu : MonoBehaviour
         File.AppendAllText(path,questionPos.ToString()+":"+score.ToString()+"\n");
 
         questionPos++;
-        if (questionPos > questionQueue.Length - 1)
+        if (questionPos > questionList.Length - 1)
         {
-            //²é¿´Ê±ÑÓ»ò¿¨¶ÙÈÎÎñ½ø¶È
             if (taskMenu.taskPos > taskMenu.delayList.Length - 1)
                 objectGoodbyeMenu.SetActive(true);
             else
@@ -43,7 +42,7 @@ public class ScaleMenu : MonoBehaviour
             gameObject.SetActive(false);
         }
         else
-            questionText.text = questionQueue[questionPos];
+            questionText.text = questionList[questionPos];
     }
     private void Awake()
     {
@@ -61,8 +60,7 @@ public class ScaleMenu : MonoBehaviour
     private void OnEnable()
     {
         questionPos = 1;
-        questionText.text = questionQueue[questionPos];
-        //Ê±ÑÓ»ò¿¨¶ÙµÃ·ÖÐ´Èë
+        questionText.text = questionList[questionPos];
         File.AppendAllText(path, "delay:" + taskMenu.delayList[taskMenu.taskPos].ToString() + "\n");
         File.AppendAllText(path, "time:" + timer.time.ToString("0.0") + "\n");
     }

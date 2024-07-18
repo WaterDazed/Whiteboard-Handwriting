@@ -25,27 +25,6 @@ public class TaskMenu : MonoBehaviour
     public int[] delayList = new int[8] { 0, 100, 500, 1000, 1750, 2500, 3500, 4500 };//ms
     const int inherentDelay = 80;
 
-    //stall
-    public STALL[] stallList = new STALL[16]
-    {
-        new STALL {stallIntervalTime=0,stallTime=0 },
-        new STALL {stallIntervalTime=500, stallTime=500},
-        new STALL {stallIntervalTime=60, stallTime=6},
-        new STALL {stallIntervalTime=60, stallTime=60},
-        new STALL {stallIntervalTime=30, stallTime=120},
-        new STALL {stallIntervalTime=20, stallTime=18},
-        new STALL {stallIntervalTime=20, stallTime=90},
-        new STALL {stallIntervalTime=60, stallTime=120},
-        new STALL {stallIntervalTime=60, stallTime=18},
-        new STALL {stallIntervalTime=30, stallTime=60},
-        new STALL {stallIntervalTime=60, stallTime=90},
-        new STALL {stallIntervalTime=20, stallTime=45},
-        new STALL {stallIntervalTime=20, stallTime=6},
-        new STALL {stallIntervalTime=60, stallTime=30},
-        new STALL {stallIntervalTime=60, stallTime=45},
-        new STALL {stallIntervalTime=30, stallTime=6}
-
-    };
 
     public int taskPos = 1;
 

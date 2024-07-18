@@ -11,35 +11,27 @@ public struct BoardData
 
     public int type, x, y, color, drawSize;
     public long time;
+    public byte[] customData;
+    public UInt32 byteCount;
 
-    public BoardData(int type, int x, int y, int color, int drawSize, long time)
+    public BoardData(int type, int x, int y, int color, int drawSize, long time, byte[] customData, UInt32 byteCount)
     {
         this.type = type;
         /*
         -1:清空白板
-        0：非起笔点
+        0：非起笔点 
         1：起笔点
         2：开始绘画
         3：结束绘画
+        4：只有数字人
          */
         this.x = x;
         this.y = y;
         this.color = color;
         this.drawSize = drawSize;
         this.time = time;
-    }
-}
-public struct AvatarData
-{
-    public byte[] customData;
-    public UInt32 byteCount;
-    public long timeStamp;
-
-    public AvatarData(byte[] Data, UInt32 count, long timeStamp)
-    {
-        this.customData = Data;
-        this.byteCount = count;
-        this.timeStamp = timeStamp;
+        this.customData = customData;
+        this.byteCount = byteCount;
     }
 }
 public class PacketData : IDisposable

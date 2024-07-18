@@ -4,14 +4,13 @@ using TMPro;
 using UnityEngine;
 public class ConnectReceiveHandle : MonoBehaviour
 {
-    public GameObject objectRenderStreaming, objectWhiteboard, objectReadyMenu, objectTaskMenu, objectAvatarManager;
+    public GameObject objectRenderStreaming, objectWhiteboard, objectReadyMenu, objectTaskMenu,objectDebug;
     private Whiteboard whiteboard;
     private ReadyMenu readyMenu;
     private TaskMenu taskMenu;
     private AvatarTransRemote avatarTransRemote;
 
     public Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
-    public Queue<AvatarData> avatarDataBuffer = new Queue<AvatarData>();
 
     public long localDelayTime = 0;
     public long preFrameTime;
@@ -26,9 +25,9 @@ public class ConnectReceiveHandle : MonoBehaviour
         whiteboard = objectWhiteboard.GetComponent<Whiteboard>();
         readyMenu = objectReadyMenu.GetComponent<ReadyMenu>();
         taskMenu = objectTaskMenu.GetComponent<TaskMenu>();
-        avatarTransRemote = objectAvatarManager.GetComponent<AvatarTransRemote>();
+        avatarTransRemote = objectWhiteboard.GetComponent<AvatarTransRemote>();
 
-        preFrameTime = GetCurrentTime.Get(); 
+        preFrameTime = GetCurrentTime.Get();
 
     }
 
@@ -40,22 +39,22 @@ public class ConnectReceiveHandle : MonoBehaviour
         if (boardDataBuffer.Count > 0)
         {
             var boardData = boardDataBuffer.Peek();
-            if (timeNow - boardData.time >= localDelayTime)
+            if (boardData.type == 4)    
+            {
+                avatarTransRemote.ApplyAvatarData(boardData);
+                boardDataBuffer.Dequeue();
+            }         
+            else if (timeNow - boardData.time >= localDelayTime)
             {
                 if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
                 {
-                    whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
+                    whiteboard.ReceiveDraw(boardData);
                     boardDataBuffer.Dequeue();
-
-                    if (avatarDataBuffer.Count > 0)
-                        avatarTransRemote.ApplyAvatarData(avatarDataBuffer.Dequeue());
 
                     stallIntervalTimeCount += frameDeltaTime;
                 }
                 else if (stallTimeCount < stallTime)
-                {
                     stallTimeCount += frameDeltaTime;
-                }
                 else
                 {
                     stallIntervalTimeCount = 0;
@@ -63,17 +62,16 @@ public class ConnectReceiveHandle : MonoBehaviour
                 }
             }
         }
-        else if (avatarDataBuffer.Count > 0)
-            avatarTransRemote.ApplyAvatarData(avatarDataBuffer.Dequeue());
+
     }
 
     public void ReceiveData(BoardData boardData)
     {
-        long timeNow = GetCurrentTime.Get();
         if (boardData.type == -1)
             whiteboard.BoardClear();
         else if (boardData.type == 0 || boardData.type == 1)
         {
+            long timeNow = GetCurrentTime.Get();
             boardData.time = timeNow;
             boardDataBuffer.Enqueue(boardData);
         }
@@ -81,6 +79,8 @@ public class ConnectReceiveHandle : MonoBehaviour
             readyMenu.remoteReady = true;
         else if (boardData.type == 3)
             taskMenu.remoteComplete = true;
+        else if (boardData.type == 4)
+            boardDataBuffer.Enqueue(boardData);
     }
 
 }

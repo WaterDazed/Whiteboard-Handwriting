@@ -52,7 +52,7 @@ public class TaskMenu : MonoBehaviour
     public void SetSelfComplete()
     {
         selfComplete = true;
-        connectSend.SendData(new BoardData(3, 0, 0, 0, 0, 0));
+        connectSend.SendData(new BoardData(3, default, default, default, default, default, default, default));
     }
 
     // Start is called before the first frame update

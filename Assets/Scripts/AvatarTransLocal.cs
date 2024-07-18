@@ -19,12 +19,10 @@ public class AvatarTransLocal : MonoBehaviour
     [SerializeField]
     private OvrAvatarEntity _localAvatar = null;
 
-    public GameObject objectAvatarRenderStreaming;
 
 
     // Private Variables
     private readonly List<PacketData> _packetPool = new List<PacketData>(32);
-    private AvatarChannelOne avatarRenderSend;
     private PacketData GetPacketForEntityAtLOD(OvrAvatarEntity entity, StreamLOD lod)
     {
         PacketData packet;
@@ -52,27 +50,26 @@ public class AvatarTransLocal : MonoBehaviour
     {
         AvatarLODManager.Instance.firstPersonAvatarLod = _localAvatar.AvatarLOD;
         AvatarLODManager.Instance.enableDynamicStreaming = true;
-        avatarRenderSend = objectAvatarRenderStreaming.GetComponent<AvatarChannelOne>();
     }
 
     private void Update()
     {
-        if (!avatarRenderSend.IsConnected)
-            return;
-        SendPacket(StreamLOD.Medium);
+        
     }
 
-    private void SendPacket(StreamLOD lod)
+    public BoardData GetAvatarData()
     {
+        var lod = StreamLOD.Medium;
         var packet = GetPacketForEntityAtLOD(_localAvatar, lod);
 
         packet.dataByteCount = _localAvatar.RecordStreamData_AutoBuffer(lod, ref packet.data);
         Debug.Assert(packet.dataByteCount > 0);
 
-        AvatarData avatarData = new AvatarData(NativeArrayExtension.ToRawBytes(packet.data), packet.dataByteCount, 0);
-        avatarRenderSend.SendAvatarData(avatarData);
+        BoardData boardData = new BoardData(4, default, default, default, default, default, NativeArrayExtension.ToRawBytes(packet.data), packet.dataByteCount);
 
         if (packet.Release())
             ReturnPacket(packet);
+
+        return boardData;
     }
 }

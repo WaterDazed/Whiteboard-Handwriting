@@ -5,6 +5,8 @@ public class Whiteboard : MonoBehaviour
     public GameObject objectRenderSreaming, objectHandPrefab;
     private WhiteboardPen whiteboardPen;
     private ConnectSend connectSend;
+    private AvatarTransLocal avatarTransLocal;
+    private AvatarTransRemote avatarTransRemote;
     private int texturesSizeHorizontal;
     private int texturesSizeVertical;
 
@@ -63,17 +65,22 @@ public class Whiteboard : MonoBehaviour
     {
         if (!connectSend.IsConnected)
             return;
-        connectSend.SendData(new BoardData(-1, 0, 0, 0, 0, 0));
+        connectSend.SendData(new BoardData(-1, default, default, default, default, default, default, default));
     }
-    public void RemoteDraw(int type, int x, int y, int color, int drawSize)
+    public void RemoteDraw(BoardData boardData)
     {
         if (!connectSend.IsConnected)
             return;
-        connectSend.SendData(new BoardData(type, x, y, color, drawSize, 0));
+        connectSend.SendData(boardData);
     }
-    public void ReceiveDraw(int type, int x, int y, int color, int drawSize)
+    public void ReceiveDraw(BoardData boardData)
     {
-        Color drawColor = NumToColor(color);
+        int type = boardData.type;
+        int x = boardData.x;
+        int y = boardData.y;
+        Color drawColor = NumToColor(boardData.color);
+        int drawSize = boardData.drawSize;
+
         remoteTouching = type == 1;
         if (remoteTouchingLast)
         {
@@ -88,10 +95,13 @@ public class Whiteboard : MonoBehaviour
 
             texture.Apply();
         }
+        avatarTransRemote.ApplyAvatarData(boardData);
 
         remoteLastX = x;
         remoteLastY = y;
         remoteTouchingLast = remoteTouching;
+
+
     }
     public void Awake()
     {
@@ -105,10 +115,12 @@ public class Whiteboard : MonoBehaviour
 
         connectSend = objectRenderSreaming.GetComponent<ConnectSend>();
         whiteboardPen = objectHandPrefab.GetComponent<WhiteboardPen>();
-
+        avatarTransLocal = gameObject.GetComponent<AvatarTransLocal>();
+        avatarTransRemote = gameObject.GetComponent<AvatarTransRemote>();
     }
     void Update()
     {
+        BoardData boardData = avatarTransLocal.GetAvatarData();
         int drawSize = whiteboardPen.drawSize;
         Color drawColor = whiteboardPen.drawColor;
         int x = (int)(posX * texturesSizeHorizontal - (drawSize / 2));
@@ -126,8 +138,13 @@ public class Whiteboard : MonoBehaviour
 
             texture.Apply();
 
-            RemoteDraw(touching ? 1 : 0, x, y, ColorToNum(drawColor), drawSize);
+            boardData.type = touching ? 1 : 0;
+            boardData.x = x;
+            boardData.y = y;
+            boardData.color = ColorToNum(drawColor);
+            boardData.drawSize = drawSize;
         }
+        RemoteDraw(boardData);
 
         lastX = x;
         lastY = y;

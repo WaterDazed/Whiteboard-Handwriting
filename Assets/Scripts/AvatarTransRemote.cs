@@ -64,17 +64,13 @@ public class AvatarTransRemote : MonoBehaviour
 
     // Serialized Variables
     [SerializeField]
-    private OvrAvatarEntity _loopbackAvatars = null;
+    private OvrAvatarEntity _remoteAvatar = null;
 
-    public GameObject objectAvatarRenderStreaming, objectRenderStreaming;
 
-    private ConnectReceiveHandle connectReceiveHandle;
 
     void Awake()
     {
         AvatarLODManager.Instance.enableDynamicStreaming = true;
-        objectAvatarRenderStreaming.GetComponent<AvatarChannelTwo>().OnGetAvatar.AddListener(ReceiveAvatarData);
-        connectReceiveHandle = objectRenderStreaming.GetComponent<ConnectReceiveHandle>();
     }
 
     private void Update()
@@ -82,15 +78,11 @@ public class AvatarTransRemote : MonoBehaviour
 
 
     }
-    public void ReceiveAvatarData(AvatarData avatarData)
-    {
-        connectReceiveHandle.avatarDataBuffer.Enqueue(avatarData);
-    }
 
-    public void ApplyAvatarData(AvatarData datatemp)
+    public void ApplyAvatarData(BoardData datatemp)
     {
         NativeArray<byte> data = NativeArrayExtension.FromRawBytes<byte>(datatemp.customData, Allocator.Temp);
         var dataSlice = data.Slice(0, (int)datatemp.byteCount);
-        _loopbackAvatars.ApplyStreamData(in dataSlice);
+        _remoteAvatar.ApplyStreamData(in dataSlice);
     }
 }

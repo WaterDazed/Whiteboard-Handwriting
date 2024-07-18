@@ -74,7 +74,6 @@ public class TaskMenu : MonoBehaviour
         connectReceiveHandle.stallIntervalTime = stallList[taskPos].stallIntervalTime;
         connectReceiveHandle.stallTime = stallList[taskPos].stallTime;
         connectReceiveHandle.stallIntervalTimeCount = connectReceiveHandle.stallTimeCount = 0;
-        connectReceiveHandle.preFrameTime = GetCurrentTime.Get();
         //开始计时
         timer.TimerStart();
         //展示图画示例

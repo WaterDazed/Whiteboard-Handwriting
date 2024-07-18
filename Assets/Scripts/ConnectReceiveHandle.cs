@@ -12,7 +12,7 @@ public class ConnectReceiveHandle : MonoBehaviour
 
     public Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
 
-    public long localDelayTime = 0;
+    public long localDelayTime;
     public long preFrameTime;
     public int stallIntervalTime = 0, stallTime = 0;
     public int stallIntervalTimeCount = 0, stallTimeCount = 0;
@@ -39,14 +39,14 @@ public class ConnectReceiveHandle : MonoBehaviour
         if (boardDataBuffer.Count > 0)
         {
             var boardData = boardDataBuffer.Peek();
-            if (boardData.type == 4)    
+            if (timeNow - boardData.time >= localDelayTime)
             {
-                avatarTransRemote.ApplyAvatarData(boardData);
-                boardDataBuffer.Dequeue();
-            }         
-            else if (timeNow - boardData.time >= localDelayTime)
-            {
-                if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
+                if (boardData.type == 4)
+                {
+                    avatarTransRemote.ApplyAvatarData(boardData);
+                    boardDataBuffer.Clear();
+                }
+                else if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
                 {
                     whiteboard.ReceiveDraw(boardData);
                     avatarTransRemote.ApplyAvatarData(boardData);

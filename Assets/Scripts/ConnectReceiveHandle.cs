@@ -12,7 +12,7 @@ public class ConnectReceiveHandle : MonoBehaviour
 
     public Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
 
-    public long localDelayTime = 0;
+    public long localDelayTime = 100 - 80;
 
     void Awake()
     {

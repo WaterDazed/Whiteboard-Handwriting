@@ -51,13 +51,14 @@ public class TaskMenu : MonoBehaviour
         procedureText.text = "实验进度:" + taskPos.ToString() + "/" + (delayList.Length - 1).ToString();
         //应用时延或卡顿
         connectReceiveHandle.localDelayTime = delayList[taskPos] - inherentDelay;
+        connectReceiveHandle.boardDataBuffer.Clear();
         //开始计时
         timer.TimerStart();
         //展示图画示例
         int index1 = taskPos % 5, index2 = (taskPos + 1) % 5;
         objectPic1 = transform.GetChild(2).GetChild(index1).gameObject;
         objectPic2 = transform.GetChild(2).GetChild(index2).gameObject;
-        objectPic1.SetActive(true);
+        objectPic1.SetActive(true); 
         objectPic2.SetActive(true);
     }
     private void OnDisable()
@@ -69,6 +70,9 @@ public class TaskMenu : MonoBehaviour
         //隐藏图画示例
         objectPic1.SetActive(false);
         objectPic2.SetActive(false);
+        //时延重置
+        connectReceiveHandle.localDelayTime = 100 - inherentDelay;
+        connectReceiveHandle.boardDataBuffer.Clear();
 
         taskPos++;
     }

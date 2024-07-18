@@ -19,6 +19,7 @@ public struct BoardData
         this.type = type;
         /*
         -1:清空白板
+        0：非起笔点 
         1：起笔点
         2：开始绘画
         3：结束绘画

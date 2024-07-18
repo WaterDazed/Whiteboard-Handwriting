@@ -22,9 +22,29 @@ public class TaskMenu : MonoBehaviour
     private bool selfComplete = false;
 
     //delay
-    public int[] delayList = new int[8] { 0, 100, 500, 1000, 1750, 2500, 3500, 4500 };//ms
     const int inherentDelay = 80;
 
+    //stall
+    public STALL[] stallList = new STALL[16]
+    {
+        new STALL {stallIntervalTime=0,stallTime=0 },
+        new STALL {stallIntervalTime=500, stallTime=100},
+        new STALL {stallIntervalTime=500, stallTime=300},
+        new STALL {stallIntervalTime=500, stallTime=500},
+        new STALL {stallIntervalTime=500, stallTime=750},
+        new STALL {stallIntervalTime=500, stallTime=1000},
+        new STALL {stallIntervalTime=500, stallTime=1500},
+        new STALL {stallIntervalTime=500, stallTime=2000},
+        new STALL {stallIntervalTime=250, stallTime=100},
+        new STALL {stallIntervalTime=250, stallTime=500},
+        new STALL {stallIntervalTime=250, stallTime=1000},
+        new STALL {stallIntervalTime=250, stallTime=2000},
+        new STALL {stallIntervalTime=125, stallTime=100},
+        new STALL {stallIntervalTime=125, stallTime=300},
+        new STALL {stallIntervalTime=125, stallTime=750},
+        new STALL {stallIntervalTime=125, stallTime=1500}
+
+    };
 
     public int taskPos = 1;
 
@@ -48,9 +68,13 @@ public class TaskMenu : MonoBehaviour
     {
         //重置按钮和进度文字
         buttonText.text = "完成";
-        procedureText.text = "实验进度:" + taskPos.ToString() + "/" + (delayList.Length - 1).ToString();
+        procedureText.text = "实验进度:" + taskPos.ToString() + "/" + (stallList.Length - 1).ToString();
         //应用时延或卡顿
-        connectReceiveHandle.localDelayTime = delayList[taskPos] - inherentDelay;
+        connectReceiveHandle.localDelayTime = 100 - inherentDelay;
+        connectReceiveHandle.stallIntervalTime = stallList[taskPos].stallIntervalTime;
+        connectReceiveHandle.stallTime = stallList[taskPos].stallTime;
+        connectReceiveHandle.stallIntervalTimeCount = connectReceiveHandle.stallTimeCount = 0;
+        connectReceiveHandle.preFrameTime = GetCurrentTime.Get();
         //开始计时
         timer.TimerStart();
         //展示图画示例

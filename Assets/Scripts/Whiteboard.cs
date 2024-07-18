@@ -96,7 +96,6 @@ public class Whiteboard : MonoBehaviour
             texture.Apply();
         }
 
-
         remoteLastX = x;
         remoteLastY = y;
         remoteTouchingLast = remoteTouching;

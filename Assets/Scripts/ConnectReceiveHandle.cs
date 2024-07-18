@@ -34,7 +34,7 @@ public class ConnectReceiveHandle : MonoBehaviour
             var boardData = boardDataBuffer.Peek();
             if (timeNow - boardData.time >= localDelayTime)
             {
-                if (boardData.type == 1 || boardData.type == 1)
+                if (boardData.type == 0 || boardData.type == 1)
                     whiteboard.ReceiveDraw(boardData);
                 avatarTransRemote.ApplyAvatarData(boardData);
                 boardDataBuffer.Dequeue();

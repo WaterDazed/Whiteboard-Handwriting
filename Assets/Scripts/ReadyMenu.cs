@@ -17,7 +17,7 @@ public class ReadyMenu : MonoBehaviour
     public void SetSelfReady()
     {
         selfReady = true;
-        connectSend.SendData(new BoardData(2, 0, 0, 0, 0, 0));
+        connectSend.SendData(new BoardData(2, default, default, default, default, default, default, default));
     }
 
     // Start is called before the first frame update

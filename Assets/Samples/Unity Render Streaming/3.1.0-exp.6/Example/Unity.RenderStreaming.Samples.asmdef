@@ -6,7 +6,9 @@
         "Unity.XR.ARFoundation",
         "Unity.XR.ARSubsystems",
         "Unity.RenderStreaming",
-        "Unity.RenderStreaming.Sample.Stats"
+        "Unity.RenderStreaming.Sample.Stats",
+        "Oculus.VR",
+        "Oculus.AvatarSDK2"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

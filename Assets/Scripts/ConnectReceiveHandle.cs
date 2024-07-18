@@ -4,21 +4,20 @@ using TMPro;
 using UnityEngine;
 public class ConnectReceiveHandle : MonoBehaviour
 {
-    public GameObject objectRenderStreaming, objectWhiteboard, objectReadyMenu, objectTaskMenu;
+    public GameObject objectRenderStreaming, objectWhiteboard, objectReadyMenu, objectTaskMenu,objectDebug;
     private Whiteboard whiteboard;
     private ReadyMenu readyMenu;
     private TaskMenu taskMenu;
+    private AvatarTransRemote avatarTransRemote;
 
-    Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
-    private long preBufferOutTime;
-    private const long bufferDeltaTime = 16;//ms
+    public Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
 
     public long localDelayTime = 0;
-    public int stallStartFrame = 0, stallFrame = 0;
-    private int stallStartCount = 0, stallCount = 0;
+    public long preFrameTime;
+    public int stallIntervalTime = 0, stallTime = 0;
+    public int stallIntervalTimeCount = 0, stallTimeCount = 0;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         var connectReceive = objectRenderStreaming.GetComponent<ConnectReceive>();
         connectReceive.boardChangeEvent.AddListener(ReceiveData);
@@ -26,61 +25,62 @@ public class ConnectReceiveHandle : MonoBehaviour
         whiteboard = objectWhiteboard.GetComponent<Whiteboard>();
         readyMenu = objectReadyMenu.GetComponent<ReadyMenu>();
         taskMenu = objectTaskMenu.GetComponent<TaskMenu>();
+        avatarTransRemote = objectWhiteboard.GetComponent<AvatarTransRemote>();
 
-        long timeNow = GetCurrentTime.Get();
-        preBufferOutTime = timeNow;
+        preFrameTime = GetCurrentTime.Get();
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         long timeNow = GetCurrentTime.Get();
-        if (timeNow - preBufferOutTime < bufferDeltaTime)
-            return;
-        else preBufferOutTime = timeNow;
+        int frameDeltaTime = (int)(timeNow - preFrameTime);
+        preFrameTime = timeNow;
         if (boardDataBuffer.Count > 0)
         {
             var boardData = boardDataBuffer.Peek();
-            if (timeNow - boardData.time >= localDelayTime)
+            if (boardData.type == 4)    
             {
-                if (stallStartFrame == 0 || stallFrame == 0 || stallStartCount < stallStartFrame)
+                avatarTransRemote.ApplyAvatarData(boardData);
+                boardDataBuffer.Dequeue();
+            }         
+            else if (timeNow - boardData.time >= localDelayTime)
+            {
+                if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
                 {
-                    whiteboard.ReceiveDraw(boardData.type, boardData.x, boardData.y, boardData.color, boardData.drawSize);
+                    whiteboard.ReceiveDraw(boardData);
                     boardDataBuffer.Dequeue();
-                    stallStartCount++;
+
+                    stallIntervalTimeCount += frameDeltaTime;
                 }
-                else if (stallCount < stallFrame)
-                {
-                    stallCount++;
-                }
+                else if (stallTimeCount < stallTime)
+                    stallTimeCount += frameDeltaTime;
                 else
                 {
-                    stallStartCount = 0;
-                    stallCount = 0;
+                    stallIntervalTimeCount = 0;
+                    stallTimeCount = 0;
                 }
             }
         }
+
     }
 
     public void ReceiveData(BoardData boardData)
     {
-        long timeNow = GetCurrentTime.Get();
         if (boardData.type == -1)
             whiteboard.BoardClear();
         else if (boardData.type == 0 || boardData.type == 1)
         {
+            long timeNow = GetCurrentTime.Get();
             boardData.time = timeNow;
             boardDataBuffer.Enqueue(boardData);
         }
         else if (boardData.type == 2)
-        {
             readyMenu.remoteReady = true;
-        }
         else if (boardData.type == 3)
-        {
             taskMenu.remoteComplete = true;
-        }
-        //Debug.Log(boardData.type + "%" + boardData.x + "%" + boardData.y + "%" + boardData.color + "%" + boardData.time);
+        else if (boardData.type == 4)
+            boardDataBuffer.Enqueue(boardData);
     }
 
 }

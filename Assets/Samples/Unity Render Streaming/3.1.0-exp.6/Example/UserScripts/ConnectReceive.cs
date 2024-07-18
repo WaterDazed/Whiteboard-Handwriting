@@ -11,7 +11,6 @@ public class ConnectReceive : DataChannelBase
     public BoardChangeEvent boardChangeEvent;
     protected override void OnMessage(byte[] bytes)
     {
-        //Debug.Log("###########################");
         string str = System.Text.Encoding.UTF8.GetString(bytes);
 
         var boardData = JsonUtility.FromJson<BoardData>(str);

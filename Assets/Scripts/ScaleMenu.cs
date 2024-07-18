@@ -15,16 +15,16 @@ public class ScaleMenu : MonoBehaviour
     public string[] questionList = new string[11]
     {
         " ",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10"
+        "在白板上写画和操作都非常流畅、舒适与自然",
+        "我能感受到对方与自己同在",
+        "我能轻易地掌握该白板的使用方法",
+        "我感觉有点孤单",
+        "这次绘画任务的完成效率非常高",
+        "我能轻松地理解我的同伴",
+        "与同伴的绘画协作过程十分顺利",
+        "在整个绘画过程中，我都关注着我的同伴",
+        "我在理解我的同伴上有困难",
+        "在整个绘画过程中，我感觉我的同伴没有时刻关注着我"
     };
     private int questionPos;
     // Start is called before the first frame update

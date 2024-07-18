@@ -37,7 +37,7 @@ public class WhiteboardPen : MonoBehaviour
         if (indexTip == null && m_skeleton.IsInitialized)
         {
             indexTip = m_skeleton.Bones[(int)OVRPlugin.BoneId.Hand_IndexTip].Transform;
-            indexDistal = m_skeleton.Bones[(int)OVRPlugin.BoneId.Hand_Index2].Transform;
+            indexDistal = m_skeleton.Bones[(int)OVRPlugin.BoneId.Hand_Index1].Transform;
         }
 
         if (!indexTip) return;

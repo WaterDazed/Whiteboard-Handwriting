@@ -28,21 +28,21 @@ public class TaskMenu : MonoBehaviour
     public STALL[] stallList = new STALL[16]
     {
         new STALL {stallIntervalTime=0,stallTime=0 },
-        new STALL {stallIntervalTime=500, stallTime=100},
-        new STALL {stallIntervalTime=500, stallTime=300},
-        new STALL {stallIntervalTime=500, stallTime=500},
         new STALL {stallIntervalTime=500, stallTime=750},
-        new STALL {stallIntervalTime=500, stallTime=1000},
-        new STALL {stallIntervalTime=500, stallTime=1500},
-        new STALL {stallIntervalTime=500, stallTime=2000},
-        new STALL {stallIntervalTime=250, stallTime=100},
-        new STALL {stallIntervalTime=250, stallTime=500},
-        new STALL {stallIntervalTime=250, stallTime=1000},
         new STALL {stallIntervalTime=250, stallTime=2000},
-        new STALL {stallIntervalTime=125, stallTime=100},
-        new STALL {stallIntervalTime=125, stallTime=300},
+        new STALL {stallIntervalTime=500, stallTime=1000},
+        new STALL {stallIntervalTime=125, stallTime=1500},
         new STALL {stallIntervalTime=125, stallTime=750},
-        new STALL {stallIntervalTime=125, stallTime=1500}
+        new STALL {stallIntervalTime=250, stallTime=1000},
+        new STALL {stallIntervalTime=500, stallTime=500},
+        new STALL {stallIntervalTime=500, stallTime=1500},
+        new STALL {stallIntervalTime=500, stallTime=100},
+        new STALL {stallIntervalTime=125, stallTime=100},
+        new STALL {stallIntervalTime=250, stallTime=500},
+        new STALL {stallIntervalTime=250, stallTime=100},
+        new STALL {stallIntervalTime=500, stallTime=2000},
+        new STALL {stallIntervalTime=500, stallTime=300},
+        new STALL {stallIntervalTime=125, stallTime=300}
 
     };
 

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 public class ConnectReceiveHandle : MonoBehaviour
 {
-    public GameObject objectRenderStreaming, objectWhiteboard, objectReadyMenu, objectTaskMenu,objectDebug;
+    public GameObject objectRenderStreaming, objectWhiteboard, objectReadyMenu, objectTaskMenu, objectDebug;
     private Whiteboard whiteboard;
     private ReadyMenu readyMenu;
     private TaskMenu taskMenu;
@@ -12,10 +12,12 @@ public class ConnectReceiveHandle : MonoBehaviour
 
     public Queue<BoardData> boardDataBuffer = new Queue<BoardData>();
 
-    public long localDelayTime;
+    public long localDelayTime = 100 - 80;
     public long preFrameTime;
     public int stallIntervalTime = 0, stallTime = 0;
     public int stallIntervalTimeCount = 0, stallTimeCount = 0;
+
+    private bool isBoardTime = false;
 
     void Awake()
     {
@@ -43,23 +45,36 @@ public class ConnectReceiveHandle : MonoBehaviour
             {
                 if (boardData.type == 4)
                 {
-                    avatarTransRemote.ApplyAvatarData(boardData);
-                    boardDataBuffer.Clear();
+                    if (isBoardTime)
+                    {
+                        while (boardDataBuffer.Count > 0 && boardDataBuffer.Peek().type == 4)
+                            boardDataBuffer.Dequeue();
+                        isBoardTime = false;
+                    }
+                    else
+                    {
+                        avatarTransRemote.ApplyAvatarData(boardData);
+                        boardDataBuffer.Dequeue();
+                    }
                 }
-                else if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
-                {
-                    whiteboard.ReceiveDraw(boardData);
-                    avatarTransRemote.ApplyAvatarData(boardData);
-                    boardDataBuffer.Dequeue();
-                    if(stallIntervalTimeCount < stallIntervalTime)
-                        stallIntervalTimeCount += frameDeltaTime;
-                }
-                else if (stallTimeCount < stallTime)
-                    stallTimeCount += frameDeltaTime;
                 else
                 {
-                    stallIntervalTimeCount = 0;
-                    stallTimeCount = 0;
+                    isBoardTime = true;
+                    if (stallIntervalTime == 0 || stallTime == 0 || stallIntervalTimeCount < stallIntervalTime)
+                    {
+                        whiteboard.ReceiveDraw(boardData);
+                        avatarTransRemote.ApplyAvatarData(boardData);
+                        boardDataBuffer.Dequeue();
+                        if (stallIntervalTimeCount < stallIntervalTime)
+                            stallIntervalTimeCount += frameDeltaTime;
+                    }
+                    else if (stallTimeCount < stallTime)
+                        stallTimeCount += frameDeltaTime;
+                    else
+                    {
+                        stallIntervalTimeCount = 0;
+                        stallTimeCount = 0;
+                    }
                 }
             }
         }

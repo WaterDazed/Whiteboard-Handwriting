@@ -70,10 +70,10 @@ public class TaskMenu : MonoBehaviour
         buttonText.text = "完成";
         procedureText.text = "实验进度:" + taskPos.ToString() + "/" + (stallList.Length - 1).ToString();
         //应用时延或卡顿
-        connectReceiveHandle.localDelayTime = 100 - inherentDelay;
         connectReceiveHandle.stallIntervalTime = stallList[taskPos].stallIntervalTime;
         connectReceiveHandle.stallTime = stallList[taskPos].stallTime;
         connectReceiveHandle.stallIntervalTimeCount = connectReceiveHandle.stallTimeCount = 0;
+        connectReceiveHandle.boardDataBuffer.Clear();
         //开始计时
         timer.TimerStart();
         //展示图画示例
@@ -92,6 +92,10 @@ public class TaskMenu : MonoBehaviour
         //隐藏图画示例
         objectPic1.SetActive(false);
         objectPic2.SetActive(false);
+        //重置卡顿
+        connectReceiveHandle.stallIntervalTime = connectReceiveHandle.stallTime
+            = connectReceiveHandle.stallIntervalTimeCount = connectReceiveHandle.stallTimeCount = 0;
+        connectReceiveHandle.boardDataBuffer.Clear();
 
         taskPos++;
     }

@@ -22,7 +22,7 @@ public class TaskMenu : MonoBehaviour
     private bool selfComplete = false;
 
     //delay
-    public int[] delayList = new int[8] { 0, 100, 500, 1000, 1750, 2500, 3500, 4500 };//ms
+    public int[] delayList = new int[8] { 0, 1750, 3500, 100, 1000, 500, 4500, 2500 };//ms
     const int inherentDelay = 80;
 
 

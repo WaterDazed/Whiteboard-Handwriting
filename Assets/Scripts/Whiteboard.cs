@@ -6,7 +6,6 @@ public class Whiteboard : MonoBehaviour
     private WhiteboardPen whiteboardPen;
     private ConnectSend connectSend;
     private AvatarTransLocal avatarTransLocal;
-    private AvatarTransRemote avatarTransRemote;
     private int texturesSizeHorizontal;
     private int texturesSizeVertical;
 
@@ -115,7 +114,6 @@ public class Whiteboard : MonoBehaviour
         connectSend = objectRenderSreaming.GetComponent<ConnectSend>();
         whiteboardPen = objectHandPrefab.GetComponent<WhiteboardPen>();
         avatarTransLocal = gameObject.GetComponent<AvatarTransLocal>();
-        avatarTransRemote = gameObject.GetComponent<AvatarTransRemote>();
     }
     void Update()
     {

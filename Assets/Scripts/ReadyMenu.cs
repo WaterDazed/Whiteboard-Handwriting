@@ -16,6 +16,8 @@ public class ReadyMenu : MonoBehaviour
 
     public void SetSelfReady()
     {
+        if (!connectSend.IsConnected)
+            return;
         selfReady = true;
         connectSend.SendData(new BoardData(2, default, default, default, default, default, default, default));
     }

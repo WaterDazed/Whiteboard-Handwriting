@@ -50,6 +50,8 @@ public class TaskMenu : MonoBehaviour
 
     public void SetSelfComplete()
     {
+        if (!connectSend.IsConnected)
+            return;
         selfComplete = true;
         connectSend.SendData(new BoardData(3, default, default, default, default, default, default, default));
     }
